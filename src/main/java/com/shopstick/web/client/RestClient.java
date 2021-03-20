@@ -1,6 +1,7 @@
 package com.shopstick.web.client;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,7 @@ public class RestClient {
 	 * @throws UnauthorizedException
 	 * @throws GenericHttpException
 	 */
-	public <T> T callRestServiceGet(String url, String service, Class<T> responseType, Object uriVariables) throws UnauthorizedException, GenericHttpException {
+	public <T> T callRestServiceGet(String url, String service, Class<T> responseType, Map<String,?> uriVariables) throws UnauthorizedException, GenericHttpException {
 		
 		logger.debug("Invoking get rest service");
 		T retValue = null;

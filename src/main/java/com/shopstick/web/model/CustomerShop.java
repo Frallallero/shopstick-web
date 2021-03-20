@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class Shop implements Serializable {
+public class CustomerShop implements Serializable {
 	
 	/**
 	 * 
@@ -15,7 +15,7 @@ public class Shop implements Serializable {
 	private ItemModel item;
 	private Integer itemIdToAdd;
 	
-	public Shop() {
+	public CustomerShop() {
 		this.item = new ItemModel();
 	}
 }
