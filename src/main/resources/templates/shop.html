@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<title>Shopstick</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+<div class="container">
+	<form id ="shopForm" th:action="@{/shop}" th:object="${shopForm}" method="post">
+		<div class="row">
+			<div class="col-md-4">
+				<h2 th:text="#{message.welcome}"></h2>
+			</div>
+		</div>
+		
+<!-- 		OWNER CREATES NEW ITEM -->
+		<div class="row">
+			<h2 th:text="#{message.createItem}"></h2>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<label for="itemName" th:text="#{label.itemName}"></label>
+				<input type='text' maxlength="80" th:field="*{item.name}" th:value="*{item.name}">
+			</div>
+			<div class="col-md-4">
+				<label for="itemDescription" th:text="#{label.itemDescription}"></label>
+				<input type='text' maxlength="250" th:field="*{item.description}" th:value="*{item.description}">
+			</div>
+			<div class="col-md-4">
+				<label for="itemCategory" th:text="#{label.itemCategory}"></label>
+				<input type='text' th:field="*{item.category}" th:value="*{item.category}">
+			</div>
+		</div>
+		<div class="row">			
+			<div class="col-md-4">
+				<label for="itemStock" th:text="#{label.itemStock}"></label>
+				<input type='text' maxlength="4" th:field="*{item.stockNumber}" th:value="*{item.stockNumber}">
+			</div>
+			<div class="col-md-4">
+				<label for="itemPrice" th:text="#{label.itemPrice}"></label>
+				<input type='text' maxlength="4" th:field="*{item.price}" th:value="*{item.price}">
+			</div>
+			<div class="col-md-4">
+				<label for="itemImage" th:text="#{label.itemImage}"></label>
+				<input type='text' maxlength="4" th:field="*{item.image}" th:value="*{item.image}">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2">
+				<input type="submit" name="createItem" value="Create item">
+				<input id="clearPage" type="submit" name="clear" value="Clear">
+			</div>
+		</div>
+		
+		
+<!-- 	SHOW AVAILABLE ITEMS -->
+		<th:block th:if="${itemsList != null}">
+			<div class="row">
+				<div class="col-md-8">
+					<table>
+						<thead>
+							<tr>
+								<td role="columnheader" th:text="#{label.itemName}"></td>
+								<td role="columnheader" th:text="#{label.itemCategory}"></td>
+								<td role="columnheader" th:text="#{label.itemStock}"></td>
+							</tr>
+						</thead>
+						<tbody>
+							<th:block th:each="it : ${itemsList}">
+								<tr>
+									<td th:text="${it.name}"></td>
+									<td th:text="${it.category}"></td>
+									<td th:text="${it.stockNumber}"></td>
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</th:block>
+		
+		
+		<div class="row pt-4">
+			<h2 th:text="#{message.customer}"></h2>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-2">
+				<input type="submit" name="addToCart" value="Add to cart">
+			</div>
+		</div>
+	</form>
+</div>
+</body>
+
+</html>
