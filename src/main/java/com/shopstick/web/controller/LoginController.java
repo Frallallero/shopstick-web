@@ -1,7 +1,5 @@
 package com.shopstick.web.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,9 +67,10 @@ public class LoginController {
 					return REDIRECT + Constants.SHOP_PAGE;
 				} else {
 					CustomerShop customerShop = new CustomerShop();
-					customerShop.setUser(user);
-					redirect.addFlashAttribute(Constants.SHOP_FORM, customerShop);
-					return REDIRECT + Constants.SHOP_PAGE;
+					customerShop.setUserId(user.getId());
+					customerShop.setUserName(user.getName());
+					redirect.addFlashAttribute(Constants.CUSTOMER_SHOP_FORM, customerShop);
+					return REDIRECT + Constants.CUSTOMER_SHOP_PAGE;
 				}
 			}
 		}

@@ -11,11 +11,10 @@ public class CustomerShop implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 312542631971985965L;
-	private ShopUserModel user;
-	private ItemModel item;
+	private String error;
+	private Integer userId;
+	private String userName;
 	private Integer itemIdToAdd;
+	private Integer itemToAddQuantity;
 	
-	public CustomerShop() {
-		this.item = new ItemModel();
-	}
 }

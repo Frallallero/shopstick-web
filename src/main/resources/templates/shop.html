@@ -12,10 +12,11 @@
 
 <body>
 <div class="container">
-	<form id ="shopForm" th:action="@{/shop}" th:object="${shopForm}" method="post">
+		<form id="shopForm" th:action="@{/shop}" th:object="${shopForm}"
+			method="post">
 
 			<div th:if="${#fields.hasErrors('*')}">
-				<div class="alert alert-danger Alert--withIcon" role="alert">
+				<div class="alert alert-danger" role="alert">
 					<h4 th:text="#{message.messageWarning}"></h4>
 					<div class="clearfix">
 						<div th:errors="*{error}"></div>
@@ -24,111 +25,89 @@
 			</div>
 
 			<div class="row">
-			<div class="col-md-4">
-				<h2 th:text="#{message.welcome}"></h2>
-			</div>
-		</div>
-		
-<!-- 		OWNER CREATES NEW ITEM -->
-		<div class="row">
-			<h2 th:text="#{message.createItem}"></h2>
-		</div>
-		<div class="row">
-			<div class="col-md-4">
-				<label for="itemName" th:text="#{label.itemName}"></label>
-				<input type='text' maxlength="80" th:field="*{itemName}" th:value="*{itemName}">
-			</div>
-			<div class="col-md-4">
-				<label for="itemDescription" th:text="#{label.itemDescription}"></label>
-				<input type='text' maxlength="250" th:field="*{itemDescription}" th:value="*{itemDescription}">
-			</div>
-			<div class="col-md-4">
-				<label for="itemCategory" th:text="#{label.itemCategory}"></label>
-				<select th:field="*{itemCategory}" id="itemCategory">
-					<option selected th:value="''">-- Select --</option>
-					<option th:each="cat: ${categories}" th:utext="${cat}"
-						th:value="${cat}">
-				</select> 
-			</div>
-		</div>
-		<div class="row">			
-			<div class="col-md-4">
-				<label for="itemStock" th:text="#{label.itemStock}"></label>
-				<input type='text' maxlength="4" th:field="*{itemStockNumber}" th:value="*{itemStockNumber}">
-			</div>
-			<div class="col-md-4">
-				<label for="itemPrice" th:text="#{label.itemPrice}"></label>
-				<input type='text' maxlength="4" th:field="*{itemPrice}" th:value="*{itemPrice}">
-			</div>
-			<div class="col-md-4">
-				<label for="itemImage" th:text="#{label.itemImage}"></label>
-				<input type='text' maxlength="4" th:field="*{itemImage}" th:value="*{itemImage}">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-2">
-				<input type="submit" name="createItem" value="Create item">
-				<input id="clearPage" type="submit" name="clear" value="Clear">
-			</div>
-		</div>
-		
-<!-- 	SHOW AVAILABLE ITEMS -->
-		<th:block th:if="${itemsList != null}">
-			<div class="row">
-				<div class="col-md-8">
-					<table>
-						<thead>
-							<tr>
-								<td role="columnheader" th:text="#{label.itemName}"></td>
-								<td role="columnheader" th:text="#{label.itemCategory}"></td>
-								<td role="columnheader" th:text="#{label.itemStock}"></td>
-							</tr>
-						</thead>
-						<tbody>
-							<th:block th:each="it : ${itemsList}">
-								<tr>
-									<td th:text="${it.name}"></td>
-									<td th:text="${it.category}"></td>
-									<td th:text="${it.stockNumber}"></td>
-								</tr>
-							</th:block>
-						</tbody>
-					</table>
+				<div class="col-md-4">
+					<h2 th:text="#{message.welcome}"></h2>
 				</div>
 			</div>
-		</th:block>
-		
-		
-		<div class="row pt-4">
-			<h2 th:text="#{message.customer}"></h2>
-		</div>
 
+<!-- 		OWNER CREATES NEW ITEM -->
+			<div class="row">
+				<h2 th:text="#{message.createItem}"></h2>
+			</div>
+			<div class="row pt-2">
+				<div class="col-md-4">
+					<label for="itemName" th:text="#{label.itemName}"></label> <input
+						type='text' maxlength="80" th:field="*{itemName}"
+						th:value="*{itemName}">
+				</div>
+				<div class="col-md-4">
+					<label for="itemDescription" th:text="#{label.itemDescription}"></label>
+					<input type='text' maxlength="250" th:field="*{itemDescription}"
+						th:value="*{itemDescription}">
+				</div>
+				<div class="col-md-4">
+					<label for="itemCategory" th:text="#{label.itemCategory}"></label>
+					<select th:field="*{itemCategory}" id="itemCategory">
+						<option selected th:value="''">-- Select --</option>
+						<option th:each="cat: ${categories}" th:utext="${cat}"
+							th:value="${cat}">
+					</select>
+				</div>
+			</div>
+			<div class="row pt-2">
+				<div class="col-md-4">
+					<label for="itemStockNumber" th:text="#{label.itemStockNumber}"></label> <input
+						type='text' maxlength="4" th:field="*{itemStockNumber}"
+						th:value="*{itemStockNumber}">
+				</div>
+				<div class="col-md-4">
+					<label for="itemPrice" th:text="#{label.itemPrice}"></label> <input
+						type='text' maxlength="4" th:field="*{itemPrice}"
+						th:value="*{itemPrice}">
+				</div>
+				<div class="col-md-4">
+					<label for="itemImage" th:text="#{label.itemImage}"></label> <input
+						type='text' maxlength="4" th:field="*{itemImage}"
+						th:value="*{itemImage}">
+				</div>
+			</div>
+			<div class="row pt-2">
+				<div class="col-md-2">
+					<input type="submit" name="createItem" value="Create item">
+					<input id="clearPage" type="submit" name="clear" value="Clear">
+				</div>
+			</div>
+
+			<!-- 	SHOW AVAILABLE ITEMS -->
 			<th:block th:if="${itemsList != null}">
-				<div class="row">
-					<th:block th:each="it : ${itemsList}">
-						<div class="col-md-3 card">
-							<img src="..." class="card-img-top" alt="...">
-							<div class="card-body">
-								<h5 class="card-title" th:text="${it.name}"></h5>
-								<h5 class="card-title" th:text="${it.price + 'S$'}"></h5>
-								<p class="card-text" th:text="${it.description}"></p>
-								<input class="btn btn-primary" type="submit" name="addToCart" th:value="#{label.addToCart}"></input>
-							</div>
-						</div>
-						<div class="col-md-1"></div>
-					</th:block>
+				<div class="row pt-5">
+					<div class="col-md-8">
+						<table>
+							<thead>
+								<tr>
+									<td role="columnheader" th:text="#{label.itemName}"></td>
+									<td role="columnheader" th:text="#{label.itemCategory}"></td>
+									<td role="columnheader" th:text="#{label.itemStock}"></td>
+								</tr>
+							</thead>
+							<tbody>
+								<th:block th:each="it : ${itemsList}">
+									<tr>
+										<td th:text="${it.name}"></td>
+										<td th:text="${it.category}"></td>
+										<td th:text="${it.stockNumber}"></td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</th:block>
 
-			<div class="row">
-			<div class="col-md-2">
-				<input type="submit" name="addToCart" value="Add to cart">
-			</div>
-		</div>
-		<input type="hidden" th:field="*{userId}" />
-		<input type="hidden" th:field="*{userName}" />
-	</form>
-</div>
+			<input type="hidden" th:field="*{userId}" /> <input type="hidden"
+				th:field="*{userName}" />
+		</form>
+	</div>
 </body>
 
 </html>

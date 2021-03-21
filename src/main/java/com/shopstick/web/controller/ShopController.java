@@ -37,6 +37,7 @@ public class ShopController {
         return Constants.CATEGORIES;
     }
 	
+	@SuppressWarnings("unchecked")
 	@ModelAttribute("itemsList")
     public List<ItemModel> availableItems() throws UnauthorizedException, GenericHttpException {
         return restClient.callRestServiceGet(Constants.SHOP_BE_URL, Constants.ITEM_RESOURCE_URL, List.class, new HashMap<>());
@@ -66,7 +67,6 @@ public class ShopController {
 		return Constants.SHOP_PAGE;
 	}
 	
-	
 	/**
 	 * Invoke this method to create a new Item
 	 * 
@@ -79,22 +79,6 @@ public class ShopController {
 
 		logger.info("ShopController :: createItem");
 		restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.ITEM_RESOURCE_URL, ItemModel.class, shop.setItemModel());
-		
-		return Constants.SHOP_PAGE;
-	}
-	
-	/**
-	 * Invoke this method to add item to cart
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	@PostMapping(params = "addToCart")
-	public String addToCart(@ModelAttribute(Constants.SHOP_FORM) Shop shop,
-			Model model, Errors errors) throws Exception {
-
-		logger.info("ShopController :: addToCart");
-		restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.ADD_TO_CART_RESOURCE_URL, ItemModel.class, shop.setItemModel());
 		
 		return Constants.SHOP_PAGE;
 	}
