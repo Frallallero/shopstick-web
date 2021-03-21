@@ -59,7 +59,15 @@
 					<input type="submit" name="purchase" value="Purchase">
 				</div>
 			</div>
+			
+			<div class="row pt-2" th:if="${uuid}!=null">
+				<div class="col-md-4">
+					<label for="transactionId" th:text="#{label.transactionId}"></label>
+					<label th:text="${uuid}"></label>
+				</div>
+			</div>
 
+			<input type="hidden" th:field="*{cartId}" />
 		</form>
 	</div>
 </body>

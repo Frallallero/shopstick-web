@@ -87,7 +87,8 @@
 								<tr>
 									<td role="columnheader" th:text="#{label.itemName}"></td>
 									<td role="columnheader" th:text="#{label.itemCategory}"></td>
-									<td role="columnheader" th:text="#{label.itemStock}"></td>
+									<td role="columnheader" th:text="#{label.itemStockNumber}"></td>
+									<td role="columnheader" th:text="#{label.price}"></td>
 								</tr>
 							</thead>
 							<tbody>
@@ -96,6 +97,7 @@
 										<td th:text="${it.name}"></td>
 										<td th:text="${it.category}"></td>
 										<td th:text="${it.stockNumber}"></td>
+										<td th:text="${it.price} + ' S$'"></td>
 									</tr>
 								</th:block>
 							</tbody>
@@ -104,8 +106,8 @@
 				</div>
 			</th:block>
 
-			<input type="hidden" th:field="*{userId}" /> <input type="hidden"
-				th:field="*{userName}" />
+			<input type="hidden" th:field="*{userId}" />
+			<input type="hidden" th:field="*{userName}" />
 		</form>
 	</div>
 </body>

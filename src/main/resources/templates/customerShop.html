@@ -43,7 +43,7 @@
 								<h5 class="card-title" th:text="${it.name}"></h5>
 								<h5 class="card-title" th:text="${it.price + 'S$'}"></h5>
 								<p class="card-text" th:text="${it.description}"></p>
-								<input class="btn btn-primary" type="submit" th:name="addToCart" th:value="#{label.addToCart}"></input>
+								<button class="btn btn-primary" type="submit" th:name="addToCart" th:value="${it.id}">Add to Cart</button>
 							</div>
 						</div>
 						<div class="col-md-1"></div>
@@ -62,6 +62,7 @@
 									<td role="columnheader" th:text="#{label.itemName}"></td>
 									<td role="columnheader" th:text="#{label.itemCategory}"></td>
 									<td role="columnheader" th:text="#{label.quantity}"></td>
+									<td role="columnheader" th:text="#{label.price}"></td>
 								</tr>
 							</thead>
 							<tbody>
@@ -70,6 +71,7 @@
 										<td th:text="${ci.item.name}"></td>
 										<td th:text="${ci.item.category}"></td>
 										<td th:text="${ci.quantity}"></td>
+										<td th:text="${ci.item.price}"></td>
 									</tr>
 								</th:block>
 							</tbody>
@@ -85,6 +87,8 @@
 
 			<input type="hidden" th:field="*{userId}" />
 			<input type="hidden" th:field="*{userName}" />
+			<input type="hidden" th:field="*{itemIdToAdd}" />
+			<input type="hidden" th:field="*{cartId}" />
 		</form>
 	</div>
 </body>

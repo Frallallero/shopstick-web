@@ -1,6 +1,7 @@
 package com.shopstick.web.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import lombok.Data;
 
@@ -16,4 +17,5 @@ public class Transaction implements Serializable {
 	private String cardSurname;
 	private String cardNumber;
 	private String cvv;
+	private BigDecimal total;
 }

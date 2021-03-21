@@ -1,3 +1,4 @@
+
 package com.shopstick.web.controller;
 
 import java.util.HashMap;
@@ -60,7 +61,8 @@ public class CustomerShopController {
 	 * @throws Exception
 	 */
 	@PostMapping(params = "addToCart")
-	public String addToCart(@ModelAttribute(Constants.CUSTOMER_SHOP_FORM) CustomerShop customerShop,
+	public String addToCart(
+			@ModelAttribute(Constants.CUSTOMER_SHOP_FORM) CustomerShop customerShop,
 			Model model, Errors errors) throws Exception {
 
 		logger.info("CustomerShopController :: addToCart");
@@ -88,7 +90,11 @@ public class CustomerShopController {
 		logger.info("CustomerShopController :: retrieveCustomerCart");
 		Map<String, Integer> getParams = new HashMap<>();
 		getParams.put("id", customerShop.getUserId());
-		List<UserItem> cartItems = restClient.callRestServiceGet(Constants.SHOP_BE_URL, Constants.USER_CART_ITEMS_RESOURCE_URL, List.class, getParams);
+		UserItem[] cartItems = restClient.callRestServiceGet(Constants.SHOP_BE_URL, Constants.USER_CART_ITEMS_RESOURCE_URL, UserItem[].class, getParams);
+		if(cartItems.length>0) {
+			customerShop.setCartId(cartItems[0].getCartId());
+		}
+		
 		model.addAttribute("cartItems", cartItems);
 		return Constants.CUSTOMER_SHOP_PAGE;
 	}
@@ -107,7 +113,7 @@ public class CustomerShopController {
 		logger.info("CusomerShopController :: checkout");
 
 		Transaction transaction = new Transaction();
-		transaction.setCartId(1);
+		transaction.setCartId(customerShop.getCartId());
 		redirect.addFlashAttribute(Constants.TRANSACTION_FORM, transaction);
 		return REDIRECT + Constants.TRANSACTION_PAGE;
 	}

@@ -33,6 +33,7 @@ public class Constants {
 	public static final String ITEM_RESOURCE_URL = "/items";
 	public static final String ADD_TO_CART_RESOURCE_URL = "/carts/add-item";
 	public static final String USER_CART_ITEMS_RESOURCE_URL = "/users/{id}/cart-items";
+	public static final String PURCHASE_RESOURCE_URL = "/transactions/confirm";
 	
 	
 //	ROLES

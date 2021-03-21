@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopstick.web.client.RestClient;
 import com.shopstick.web.exception.GenericHttpException;
@@ -28,6 +29,8 @@ public class ShopController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ShopController.class);
 	private RestClient restClient = new RestClient();
+
+	public static final String REDIRECT = "redirect:";
 
 	@Autowired
 	private ShopValidator shopValidator;
@@ -75,10 +78,15 @@ public class ShopController {
 	 */
 	@PostMapping(params = "createItem")
 	public String createItem(@ModelAttribute(Constants.SHOP_FORM) Shop shop,
-			Model model, Errors errors) throws Exception {
+			Model model, RedirectAttributes redirect, Errors errors) throws Exception {
 
 		logger.info("ShopController :: createItem");
-		restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.ITEM_RESOURCE_URL, ItemModel.class, shop.setItemModel());
+		shopValidator.validateFields(shop, errors);
+		
+		if(!errors.hasErrors()) {
+			restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.ITEM_RESOURCE_URL, ItemModel.class, shop.setItemModel());
+			return REDIRECT + Constants.SHOP_PAGE;
+		}
 		
 		return Constants.SHOP_PAGE;
 	}

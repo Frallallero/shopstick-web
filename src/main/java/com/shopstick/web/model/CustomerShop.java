@@ -14,6 +14,7 @@ public class CustomerShop implements Serializable {
 	private String error;
 	private Integer userId;
 	private String userName;
+	private Integer cartId;
 	private Integer itemIdToAdd;
 	private Integer itemToAddQuantity;
 	

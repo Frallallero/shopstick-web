@@ -7,10 +7,15 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.thymeleaf.util.StringUtils;
 
+import com.shopstick.web.model.Shop;
+
 @Component
 public class ShopValidator implements Validator {
 
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+	public static final String ITEM_NAME = "item name";
+	public static final String ITEM_STOCK = "item stock";
+	public static final String ITEM_PRICE = "item unit price";
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -22,9 +27,15 @@ public class ShopValidator implements Validator {
 		// TODO Auto-generated method stub
 	}
 
-	public void validateEmptyField(String field, Errors errors) {
-		if (StringUtils.isEmptyOrWhitespace(field)) {
-			errors.rejectValue("error", "validation.itemNotSelected", new Object[] { "" }, "");
+	public void validateFields(Shop shop, Errors errors) {
+		if(StringUtils.isEmptyOrWhitespace(shop.getItemName())) {
+			errors.rejectValue("error", "validation.emptyField", new Object[] { ITEM_NAME }, "");
+		}
+		if(shop.getItemStockNumber()==null) {
+			errors.rejectValue("error", "validation.emptyField", new Object[] { ITEM_STOCK }, "");
+		}
+		if(StringUtils.isEmptyOrWhitespace(shop.getItemPrice())) {
+			errors.rejectValue("error", "validation.emptyField", new Object[] { ITEM_PRICE }, "");
 		}
 	}
 }

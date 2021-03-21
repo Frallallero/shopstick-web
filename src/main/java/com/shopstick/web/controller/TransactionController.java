@@ -43,8 +43,9 @@ public class TransactionController {
 			Model model, Errors errors) throws Exception {
 
 		logger.info("TransactionController :: purchase");
-//		restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.ITEM_RESOURCE_URL, ItemModel.class, shop.setItemModel());
+		String uuid = restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.PURCHASE_RESOURCE_URL, String.class, transaction);
 		
+		model.addAttribute("uuid", uuid);
 		return Constants.TRANSACTION_PAGE;
 	}
 	

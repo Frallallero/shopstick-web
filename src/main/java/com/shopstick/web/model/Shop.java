@@ -20,6 +20,7 @@ public class Shop implements Serializable {
 	private String itemPrice;
 	private String itemImage;
 	private Integer itemStockNumber;
+	private String error;
 
 	private Integer itemIdToAdd;
 	
