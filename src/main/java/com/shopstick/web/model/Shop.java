@@ -11,11 +11,28 @@ public class Shop implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 312542631971985965L;
-	private ShopUserModel user;
-	private ItemModel item;
+	private Integer userId;
+	private String userName;
+	private Integer itemId;
+	private String itemName;
+	private String itemDescription;
+	private String itemCategory;
+	private String itemPrice;
+	private String itemImage;
+	private Integer itemStockNumber;
+
 	private Integer itemIdToAdd;
 	
-	public Shop() {
-		this.item = new ItemModel();
+	
+	public ItemModel setItemModel() {
+		ItemModel itemModel = new ItemModel();
+		itemModel.setCategory(itemCategory);
+		itemModel.setDescription(itemDescription);
+		itemModel.setImage(itemImage);
+		itemModel.setName(itemName);
+		itemModel.setPrice(itemPrice);
+		itemModel.setStockNumber(itemStockNumber);
+		
+		return itemModel;
 	}
 }

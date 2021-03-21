@@ -1,10 +1,13 @@
 package com.shopstick.web.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -20,6 +23,7 @@ import com.shopstick.web.model.Login;
 import com.shopstick.web.model.Shop;
 import com.shopstick.web.model.ShopUserModel;
 import com.shopstick.web.util.Constants;
+import com.shopstick.web.validator.LoginValidator;
 
 @Controller
 @RequestMapping(Constants.MAPPING_LOGIN_CONTROLLER)
@@ -29,6 +33,9 @@ public class LoginController {
 	public static final String REDIRECT = "redirect:";
 
 	private RestClient restClient = new RestClient();
+	
+	@Autowired
+	private LoginValidator loginValidator;
 
 	
 	@GetMapping
@@ -48,23 +55,27 @@ public class LoginController {
 			Model model, RedirectAttributes redirect, Errors errors) throws Exception {
 
 		logger.info("LoginController :: login");
-		ShopUserModel user = retrieveUser(login, model, errors);
+		loginValidator.validateFields(login, errors);
 		
-		if(user!=null) {
-			if(user.getRole().getId().equals(Constants.ROLE_ID_OWNER)) {
-				Shop shop = new Shop();
-				shop.setUser(user);
-				redirect.addFlashAttribute(Constants.SHOP_FORM, shop);
-				return REDIRECT + Constants.SHOP_PAGE;
-			} else {
-				CustomerShop customerShop = new CustomerShop();
-				customerShop.setUser(user);
-				redirect.addFlashAttribute(Constants.SHOP_FORM, customerShop);
-				return REDIRECT + Constants.SHOP_PAGE;
+		if(!errors.hasErrors()) {
+			ShopUserModel user = retrieveUser(login, model, errors);
+
+			if(user!=null) {
+				if(user.getRole().getId().equals(Constants.ROLE_ID_OWNER)) {
+					Shop shop = new Shop();
+					shop.setUserId(user.getId());
+					shop.setUserName(user.getName());
+					redirect.addFlashAttribute(Constants.SHOP_FORM, shop);
+					return REDIRECT + Constants.SHOP_PAGE;
+				} else {
+					CustomerShop customerShop = new CustomerShop();
+					customerShop.setUser(user);
+					redirect.addFlashAttribute(Constants.SHOP_FORM, customerShop);
+					return REDIRECT + Constants.SHOP_PAGE;
+				}
 			}
 		}
-		
-		return Constants.SHOP_PAGE;
+		return Constants.LOGIN_PAGE;
 	}
 	
 	private ShopUserModel retrieveUser(Login login, Model model, Errors errors) throws Exception {

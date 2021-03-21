@@ -1,5 +1,6 @@
 package com.shopstick.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -31,13 +32,18 @@ public class ShopController {
 	@Autowired
 	private ShopValidator shopValidator;
 	
+	@ModelAttribute("categories")
+    public List<String> getCategories() {
+        return Constants.CATEGORIES;
+    }
+	
 	@ModelAttribute("itemsList")
     public List<ItemModel> availableItems() throws UnauthorizedException, GenericHttpException {
-        return restClient.callRestServiceGet(Constants.SHOP_BE_URL, Constants.ITEM_RESOURCE_URL, List.class, null);
+        return restClient.callRestServiceGet(Constants.SHOP_BE_URL, Constants.ITEM_RESOURCE_URL, List.class, new HashMap<>());
     }
 	
 	@GetMapping
-	public String getHome(
+	public String getHome (
 			@ModelAttribute(Constants.SHOP_FORM) Shop shop,
 			Model model, Errors errors) throws Exception {
 
@@ -56,8 +62,7 @@ public class ShopController {
 			Model model, Errors errors) throws Exception {
 
 		logger.info("ShopController :: clear");
-		shop = new Shop();
-		model.addAttribute(Constants.SHOP_FORM, shop);
+		model.addAttribute(Constants.SHOP_FORM, new Shop());
 		return Constants.SHOP_PAGE;
 	}
 	
@@ -73,7 +78,7 @@ public class ShopController {
 			Model model, Errors errors) throws Exception {
 
 		logger.info("ShopController :: createItem");
-		restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.ITEM_RESOURCE_URL, ItemModel.class, shop.getItem());
+		restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.ITEM_RESOURCE_URL, ItemModel.class, shop.setItemModel());
 		
 		return Constants.SHOP_PAGE;
 	}
@@ -89,7 +94,7 @@ public class ShopController {
 			Model model, Errors errors) throws Exception {
 
 		logger.info("ShopController :: addToCart");
-		restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.ADD_TO_CART_RESOURCE_URL, ItemModel.class, shop.getItem());
+		restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.ADD_TO_CART_RESOURCE_URL, ItemModel.class, shop.setItemModel());
 		
 		return Constants.SHOP_PAGE;
 	}

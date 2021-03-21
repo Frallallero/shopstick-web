@@ -13,7 +13,17 @@
 <body>
 <div class="container">
 	<form id ="shopForm" th:action="@{/shop}" th:object="${shopForm}" method="post">
-		<div class="row">
+
+			<div th:if="${#fields.hasErrors('*')}">
+				<div class="alert alert-danger Alert--withIcon" role="alert">
+					<h4 th:text="#{message.messageWarning}"></h4>
+					<div class="clearfix">
+						<div th:errors="*{error}"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
 			<div class="col-md-4">
 				<h2 th:text="#{message.welcome}"></h2>
 			</div>
@@ -26,29 +36,33 @@
 		<div class="row">
 			<div class="col-md-4">
 				<label for="itemName" th:text="#{label.itemName}"></label>
-				<input type='text' maxlength="80" th:field="*{item.name}" th:value="*{item.name}">
+				<input type='text' maxlength="80" th:field="*{itemName}" th:value="*{itemName}">
 			</div>
 			<div class="col-md-4">
 				<label for="itemDescription" th:text="#{label.itemDescription}"></label>
-				<input type='text' maxlength="250" th:field="*{item.description}" th:value="*{item.description}">
+				<input type='text' maxlength="250" th:field="*{itemDescription}" th:value="*{itemDescription}">
 			</div>
 			<div class="col-md-4">
 				<label for="itemCategory" th:text="#{label.itemCategory}"></label>
-				<input type='text' th:field="*{item.category}" th:value="*{item.category}">
+				<select th:field="*{itemCategory}" id="itemCategory">
+					<option selected th:value="''">-- Select --</option>
+					<option th:each="cat: ${categories}" th:utext="${cat}"
+						th:value="${cat}">
+				</select> 
 			</div>
 		</div>
 		<div class="row">			
 			<div class="col-md-4">
 				<label for="itemStock" th:text="#{label.itemStock}"></label>
-				<input type='text' maxlength="4" th:field="*{item.stockNumber}" th:value="*{item.stockNumber}">
+				<input type='text' maxlength="4" th:field="*{itemStockNumber}" th:value="*{itemStockNumber}">
 			</div>
 			<div class="col-md-4">
 				<label for="itemPrice" th:text="#{label.itemPrice}"></label>
-				<input type='text' maxlength="4" th:field="*{item.price}" th:value="*{item.price}">
+				<input type='text' maxlength="4" th:field="*{itemPrice}" th:value="*{itemPrice}">
 			</div>
 			<div class="col-md-4">
 				<label for="itemImage" th:text="#{label.itemImage}"></label>
-				<input type='text' maxlength="4" th:field="*{item.image}" th:value="*{item.image}">
+				<input type='text' maxlength="4" th:field="*{itemImage}" th:value="*{itemImage}">
 			</div>
 		</div>
 		<div class="row">
@@ -57,7 +71,6 @@
 				<input id="clearPage" type="submit" name="clear" value="Clear">
 			</div>
 		</div>
-		
 		
 <!-- 	SHOW AVAILABLE ITEMS -->
 		<th:block th:if="${itemsList != null}">
@@ -112,7 +125,8 @@
 				<input type="submit" name="addToCart" value="Add to cart">
 			</div>
 		</div>
-		<input type="hidden" th:field="*{item}" />
+		<input type="hidden" th:field="*{userId}" />
+		<input type="hidden" th:field="*{userName}" />
 	</form>
 </div>
 </body>

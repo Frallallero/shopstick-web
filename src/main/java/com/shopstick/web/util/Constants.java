@@ -1,5 +1,9 @@
 package com.shopstick.web.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Constants {
 
 //	CONTROLLER MAPPINGS
@@ -17,9 +21,8 @@ public class Constants {
 	public static final String SHOP_PAGE = "shop";
 	public static final String CUSTOMER_SHOP_PAGE = "customerShop";
 
+//	URL
 	public static final String SHOP_BE_URL = "http://localhost:8081/core-rest";
-	public static final String HTTP_STATUS_CODE_401 = "401";
-	public static final String HTTP_STATUS_CODE_403 = "403";
 
 //	RESOURCES
 	public static final String USER_RESOURCE_URL = "/users";
@@ -30,5 +33,10 @@ public class Constants {
 //	ROLES
 	public static final Integer ROLE_ID_OWNER = 1;
 	public static final Integer ROLE_ID_CUSTOMER = 2;
+	
+	public static final String HTTP_STATUS_CODE_401 = "401";
+	public static final String HTTP_STATUS_CODE_403 = "403";
+	public static final List<String> CATEGORIES = new ArrayList<>(Arrays.asList("FORK", "SPOON", "CHOPSTICK"));
+
 	
 }
