@@ -8,43 +8,49 @@
 <title>Shopstick</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 
 <body>
-	<div class="container">
-		<form id="loginForm" th:action="@{/login}" th:object="${loginForm}" method="post">
-		
+<div class="bannerImg">
+	<img class="banner" src="https://www.kichi-bp.com/en/wp-content/themes/hashitokyo-english/images/ourstory/MV.jpg?">
+	<div class="shopName">SHOPSTICK</div>
+</div>
+
+<div class="container">
+	<form class="LoginForm" id="loginForm" th:action="@{/login}" th:object="${loginForm}" method="post">
+
 		<div th:if="${#fields.hasErrors('*')}">
-				<div class="alert alert-danger" role="alert">
-					<h4 th:text="#{message.messageWarning}"></h4>
-					<div class="clearfix">
-						<div th:errors="*{error}"></div>
-					</div>
+			<div class="alert alert-danger" role="alert">
+				<h4 th:text="#{message.messageWarning}"></h4>
+				<div class="clearfix">
+					<div th:errors="*{error}"></div>
 				</div>
 			</div>
-			
-			<p>User login page</p>
-			<table>
-				<tr>
-					<td>Username:</td>
-					<td>
-						<input type='text' maxlength="80" th:field="*{username}" th:value="*{username}">
-					</td>
-				</tr>
-				<tr>
-					<td>Password:</td>
-					<td>
-						<input type='password' maxlength="80" th:field="*{password}" th:value="*{password}">
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="submit" name="login" value="Login">
-					</td>
-				</tr>
-			</table>
-		</form>
-	</div>
+		</div>
+
+		<p class="LoginPage">Welcome! Please login.</p>
+		<table>
+			<tr>
+				<td>Username:</td>
+				<td>
+					<input class="Username" type='text' maxlength="80" th:field="*{username}" th:value="*{username}">
+				</td>
+			</tr>
+			<tr>
+				<td>Password:</td>
+				<td>
+					<input class="Password" type='password' maxlength="80" th:field="*{password}" th:value="*{password}">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input class="LoginBtn" type="submit" name="login" value="Login">
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
 </body>
 
 </html>

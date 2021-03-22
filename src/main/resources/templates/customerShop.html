@@ -14,6 +14,12 @@
 	<div class="container">
 		<form id="customerShopForm" th:action="@{/customerShop}" th:object="${customerShopForm}" method="post">
 
+			<div th:if="${infoSuccess}">
+				<div class="alert alert-success" role="alert">
+					<h4 class="u-text-h3" th:text="#{message.messageSuccess}"></h4>
+				</div>
+			</div>
+			
 			<div th:if="${#fields.hasErrors('*')}">
 				<div class="alert alert-danger" role="alert">
 					<h4 th:text="#{message.messageWarning}"></h4>
@@ -30,11 +36,22 @@
 			</div>
 
 			<div class="row pt-4">
-<!-- 				<h2 th:text="Hello *{userName}"></h2> -->
 				<h3 th:text="#{message.customer}"></h3>
 			</div>
+			
+			<div class="row pt-2">
+				<div class="col-md-4">
+					<label for="itemCategory" th:text="#{label.category}"></label>
+					<select th:field="*{category}" id="category">
+						<option selected th:value="''">ALL</option>
+						<option th:each="cat: ${categories}" th:utext="${cat}"
+							th:value="${cat}">
+					</select>
+					<input class="btn btn-light" type="submit" th:name="reload" th:value="reload"></input>
+				</div>
+			</div>
 
-			<th:block th:if="${itemsList != null}">
+			<th:block th:if="${itemsList != null and !itemsList.isEmpty()}">
 				<div class="row">
 					<th:block th:each="it : ${itemsList}">
 						<div class="col-md-3 card">
@@ -43,19 +60,49 @@
 								<h5 class="card-title" th:text="${it.name}"></h5>
 								<h5 class="card-title" th:text="${it.price + 'S$'}"></h5>
 								<p class="card-text" th:text="${it.description}"></p>
-								<button class="btn btn-primary" type="submit" th:name="addToCart" th:value="${it.id}">Add to Cart</button>
+<!-- 								<div th:if="${it.stockNumber > 4}"> -->
+<!-- 									<select class="form-control"> -->
+<!-- 										<option th:utext="1" th:value="1"></option> -->
+<!-- 										<option th:utext="2" th:value="2"></option> -->
+<!-- 										<option th:utext="3" th:value="3"></option> -->
+<!-- 										<option th:utext="4" th:value="4"></option> -->
+<!-- 										<option th:utext="5" th:value="5"></option> -->
+<!-- 									</select> -->
+<!-- 								</div> -->
+<!-- 								<div th:unless="${it.stockNumber > 4}"> -->
+<!-- 									<select class="form-control" th:field="*{itemToAddQuantity}"> -->
+<!-- 										<option th:each="i: ${#numbers.sequence(0, it.stockNumber)}" -->
+<!-- 											th:utext="${i}" th:value="${i}"> -->
+<!-- 									</select> -->
+<!-- 								</div> -->
+								<button class="btn btn-primary" type="submit" name="addToCart" th:value="'addToCart@' + ${it.id}" th:text="#{label.addToCart}"></button>
 							</div>
 						</div>
 						<div class="col-md-1"></div>
 					</th:block>
 				</div>
+				<div class="row pt-3">
+					<div class="col-md-2">
+						<label for="quantity" th:text="#{label.quantity}"></label>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control"
+							th:field="*{itemToAddQuantity}">
+							<option th:utext="1" th:value="1"></option>
+							<option th:utext="2" th:value="2"></option>
+							<option th:utext="3" th:value="3"></option>
+							<option th:utext="4" th:value="4"></option>
+							<option th:utext="5" th:value="5"></option>
+						</select>
+					</div>
+				</div>
 			</th:block>
 			
 <!--	 	SHOW USER CART -->
-			<th:block th:if="${cartItems != null}">
+			<th:block th:if="${cartItems != null and cartItems.length>0}">
 				<div class="row pt-5">
 				<h2 th:text="#{message.myCart}"></h2>
-					<div class="col-md-8">
+					<div class="col-md-6">
 						<table>
 							<thead>
 								<tr>
@@ -63,6 +110,7 @@
 									<td role="columnheader" th:text="#{label.itemCategory}"></td>
 									<td role="columnheader" th:text="#{label.quantity}"></td>
 									<td role="columnheader" th:text="#{label.price}"></td>
+									<td role="columnheader" th:text="#{label.delete}"></td>
 								</tr>
 							</thead>
 							<tbody>
@@ -72,10 +120,17 @@
 										<td th:text="${ci.item.category}"></td>
 										<td th:text="${ci.quantity}"></td>
 										<td th:text="${ci.item.price}"></td>
+										<td>
+											<button class="btn btn-danger" type="submit" name="deleteFromCart" th:value="'deleteFromCart@' + ${ci.item.id}" th:text="#{label.delete}"></button>
+										</td>
 									</tr>
 								</th:block>
 							</tbody>
 						</table>
+					</div>
+					<div class="col-md-6">
+						<label th:text="#{label.totalPrice}"></label>
+						<label th:text="*{totalAmount}"></label>
 					</div>
 				</div>
 				<div class="row pt-2">
@@ -84,6 +139,12 @@
 					</div>
 				</div>
 			</th:block>
+			
+			<div class="row pt-2">
+				<div class="col-md-2">
+					<input type="submit" name="back" id="back" th:value="#{label.backToLogin}">
+				</div>
+			</div>
 
 			<input type="hidden" th:field="*{userId}" />
 			<input type="hidden" th:field="*{userName}" />

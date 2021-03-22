@@ -31,7 +31,9 @@ public class Constants {
 	public static final String USER_RESOURCE_URL = "/users";
 	public static final String CREDENTIALS_RESOURCE_URL = "/users/credentials/{username}/{password}";
 	public static final String ITEM_RESOURCE_URL = "/items";
+	public static final String ITEM_CATEGORY_RESOURCE_URL = "/items/categories/{categoryName}";
 	public static final String ADD_TO_CART_RESOURCE_URL = "/carts/add-item";
+	public static final String DELETE_FROM_CART_RESOURCE_URL = "/carts/delete-item";
 	public static final String USER_CART_ITEMS_RESOURCE_URL = "/users/{id}/cart-items";
 	public static final String PURCHASE_RESOURCE_URL = "/transactions/confirm";
 	

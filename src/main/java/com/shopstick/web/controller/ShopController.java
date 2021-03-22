@@ -19,6 +19,7 @@ import com.shopstick.web.client.RestClient;
 import com.shopstick.web.exception.GenericHttpException;
 import com.shopstick.web.exception.UnauthorizedException;
 import com.shopstick.web.model.ItemModel;
+import com.shopstick.web.model.Login;
 import com.shopstick.web.model.Shop;
 import com.shopstick.web.util.Constants;
 import com.shopstick.web.validator.ShopValidator;
@@ -89,6 +90,18 @@ public class ShopController {
 		}
 		
 		return Constants.SHOP_PAGE;
+	}
+	
+	/**
+	 * Invoke this method to go back to login page
+	 * 
+	 * @return
+	 */
+	@PostMapping(params = "back")
+	public String back(RedirectAttributes redirect) {
+		logger.info("LoginController :: login");
+		redirect.addFlashAttribute(Constants.LOGIN_FORM, new Login());
+		return REDIRECT + Constants.LOGIN_PAGE;
 	}
 	
 }

@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopstick.web.client.RestClient;
+import com.shopstick.web.model.Login;
 import com.shopstick.web.model.Transaction;
 import com.shopstick.web.util.Constants;
 
@@ -21,6 +23,7 @@ public class TransactionController {
 	private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
 	private RestClient restClient = new RestClient();
 
+	public static final String REDIRECT = "redirect:";
 	
 	@GetMapping
 	public String getHome (
@@ -47,6 +50,18 @@ public class TransactionController {
 		
 		model.addAttribute("uuid", uuid);
 		return Constants.TRANSACTION_PAGE;
+	}
+	
+	/**
+	 * Invoke this method to go back to login page
+	 * 
+	 * @return
+	 */
+	@PostMapping(params = "back")
+	public String back(RedirectAttributes redirect) {
+		logger.info("LoginController :: login");
+		redirect.addFlashAttribute(Constants.LOGIN_FORM, new Login());
+		return REDIRECT + Constants.LOGIN_PAGE;
 	}
 	
 }

@@ -60,10 +60,23 @@
 				</div>
 			</div>
 			
-			<div class="row pt-2" th:if="${uuid}!=null">
+			<th:block th:if="${uuid}!=null">
+			<div class="row pt-2">
 				<div class="col-md-4">
-					<label for="transactionId" th:text="#{label.transactionId}"></label>
+					<label th:text="#{label.orderPlaced}"></label>
+				</div>
+			</div>
+			<div class="row pt-2">
+				<div class="col-md-4">
+					<label th:text="#{label.transactionId}"></label>
 					<label th:text="${uuid}"></label>
+				</div>
+			</div>
+			</th:block>
+			
+			<div class="row pt-2">
+				<div class="col-md-2">
+					<input type="submit" name="back" id="back" th:value="#{label.backToLogin}">
 				</div>
 			</div>
 
