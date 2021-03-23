@@ -29,7 +29,8 @@ public class Shop implements Serializable {
 		ItemModel itemModel = new ItemModel();
 		itemModel.setCategory(itemCategory);
 		itemModel.setDescription(itemDescription);
-		itemModel.setImage(itemImage);
+//		TODO manage image
+		itemModel.setImage(null);
 		itemModel.setName(itemName);
 		itemModel.setPrice(itemPrice);
 		itemModel.setStockNumber(itemStockNumber);

@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -37,26 +36,28 @@ public class LoginController {
 
 	
 	@GetMapping
-	public String getHome(@ModelAttribute(Constants.LOGIN_FORM) Login login, Model model, Errors errors) throws Exception {
+	public String getHome(@ModelAttribute(Constants.LOGIN_FORM) Login login) {
 		logger.info("LoginController :: getHome");
 		return Constants.LOGIN_PAGE;
 	}
 	
 	/**
 	 * Invoke this method to check login
-	 * 
+	 * @param login
+	 * @param redirect
+	 * @param errors
 	 * @return
 	 * @throws Exception
 	 */
 	@PostMapping(params = "login")
 	public String login(@ModelAttribute(Constants.LOGIN_FORM) Login login,
-			Model model, RedirectAttributes redirect, Errors errors) throws Exception {
+			RedirectAttributes redirect, Errors errors) throws Exception {
 
 		logger.info("LoginController :: login");
 		loginValidator.validateFields(login, errors);
 		
 		if(!errors.hasErrors()) {
-			ShopUserModel user = retrieveUser(login, model, errors);
+			ShopUserModel user = retrieveUser(login);
 
 			if(user!=null) {
 				if(user.getRole().getId().equals(Constants.ROLE_ID_OWNER)) {
@@ -77,12 +78,13 @@ public class LoginController {
 		return Constants.LOGIN_PAGE;
 	}
 	
-	private ShopUserModel retrieveUser(Login login, Model model, Errors errors) throws Exception {
+	private ShopUserModel retrieveUser(Login login) throws Exception {
 
-		logger.info("LoginController :: retrieveUser");
+		logger.debug("LoginController :: retrieveUser");
 		Map<String, String> getParams = new HashMap<>();
 		getParams.put("username", login.getUsername());
 		getParams.put("password", login.getPassword());
+		
 		return restClient.callRestServiceGet(Constants.SHOP_BE_URL, Constants.CREDENTIALS_RESOURCE_URL, ShopUserModel.class, getParams);
 	}
 	

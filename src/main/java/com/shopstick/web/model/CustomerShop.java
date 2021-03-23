@@ -22,6 +22,7 @@ public class CustomerShop implements Serializable {
 	private BigDecimal totalAmount;
 	
 	public CustomerShop() {
+		userId = 0;
 		totalAmount = BigDecimal.ZERO;
 	}
 	

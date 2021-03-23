@@ -47,7 +47,7 @@
 						<option th:each="cat: ${categories}" th:utext="${cat}"
 							th:value="${cat}">
 					</select>
-					<input class="btn btn-light" type="submit" th:name="reload" th:value="reload"></input>
+					<input class="btn btn-light" type="submit" th:name="reload" th:value="Filter"></input>
 				</div>
 			</div>
 
@@ -75,7 +75,8 @@
 <!-- 											th:utext="${i}" th:value="${i}"> -->
 <!-- 									</select> -->
 <!-- 								</div> -->
-								<button class="btn btn-primary" type="submit" name="addToCart" th:value="'addToCart@' + ${it.id}" th:text="#{label.addToCart}"></button>
+								<button class="btn btn-primary" th:if="${it.stockNumber>0}" type="submit" name="addToCart" th:value="'addToCart@' + ${it.id}" th:text="#{label.addToCart}"></button>
+								<button class="btn btn-primary" th:unless="${it.stockNumber>0}" type="submit" name="addToCart" th:value="'addToCart@' + ${it.id}" th:text="#{label.addToCart}" th:disabled="true"></button>
 							</div>
 						</div>
 						<div class="col-md-1"></div>
@@ -119,7 +120,7 @@
 										<td th:text="${ci.item.name}"></td>
 										<td th:text="${ci.item.category}"></td>
 										<td th:text="${ci.quantity}"></td>
-										<td th:text="${ci.item.price}"></td>
+										<td th:text="${ci.item.price} + ' S$'"></td>
 										<td>
 											<button class="btn btn-danger" type="submit" name="deleteFromCart" th:value="'deleteFromCart@' + ${ci.item.id}" th:text="#{label.delete}"></button>
 										</td>
@@ -130,7 +131,7 @@
 					</div>
 					<div class="col-md-6">
 						<label th:text="#{label.totalPrice}"></label>
-						<label th:text="*{totalAmount}"></label>
+						<label th:text="*{totalAmount} + ' S$'"></label>
 					</div>
 				</div>
 				<div class="row pt-2">
@@ -142,7 +143,7 @@
 			
 			<div class="row pt-2">
 				<div class="col-md-2">
-					<input type="submit" name="back" id="back" th:value="#{label.backToLogin}">
+					<input type="submit" name="back" id="back" th:value="#{message.backToLogin}">
 				</div>
 			</div>
 

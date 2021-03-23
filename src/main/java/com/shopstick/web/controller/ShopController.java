@@ -50,7 +50,7 @@ public class ShopController {
 	@GetMapping
 	public String getHome (
 			@ModelAttribute(Constants.SHOP_FORM) Shop shop,
-			Model model, Errors errors) throws Exception {
+			Model model, Errors errors) {
 
 		logger.info("ShopController :: getHome");
 		return Constants.SHOP_PAGE;
@@ -58,13 +58,12 @@ public class ShopController {
 	
 	/**
 	 * Invoke this method to clear the page
-	 * 
+	 * @param model
 	 * @return
 	 * @throws Exception
 	 */
 	@PostMapping(params = "clear")
-	public String clear(@ModelAttribute(Constants.SHOP_FORM) Shop shop,
-			Model model, Errors errors) throws Exception {
+	public String clear(Model model) throws Exception {
 
 		logger.info("ShopController :: clear");
 		model.addAttribute(Constants.SHOP_FORM, new Shop());
@@ -73,13 +72,15 @@ public class ShopController {
 	
 	/**
 	 * Invoke this method to create a new Item
-	 * 
+	 * @param shop
+	 * @param redirect
+	 * @param errors
 	 * @return
 	 * @throws Exception
 	 */
 	@PostMapping(params = "createItem")
 	public String createItem(@ModelAttribute(Constants.SHOP_FORM) Shop shop,
-			Model model, RedirectAttributes redirect, Errors errors) throws Exception {
+			RedirectAttributes redirect, Errors errors) throws Exception {
 
 		logger.info("ShopController :: createItem");
 		shopValidator.validateFields(shop, errors);
@@ -94,12 +95,12 @@ public class ShopController {
 	
 	/**
 	 * Invoke this method to go back to login page
-	 * 
+	 * @param redirect
 	 * @return
 	 */
 	@PostMapping(params = "back")
 	public String back(RedirectAttributes redirect) {
-		logger.info("LoginController :: login");
+		logger.info("ShopController :: back");
 		redirect.addFlashAttribute(Constants.LOGIN_FORM, new Login());
 		return REDIRECT + Constants.LOGIN_PAGE;
 	}

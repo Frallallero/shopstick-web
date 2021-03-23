@@ -16,6 +16,7 @@ public class ShopValidator implements Validator {
 	public static final String ITEM_NAME = "item name";
 	public static final String ITEM_STOCK = "item stock";
 	public static final String ITEM_PRICE = "item unit price";
+	public static final String ITEM_CATEGORY = "item category";
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -33,9 +34,14 @@ public class ShopValidator implements Validator {
 		}
 		if(shop.getItemStockNumber()==null) {
 			errors.rejectValue("error", "validation.emptyField", new Object[] { ITEM_STOCK }, "");
+		} else if(shop.getItemStockNumber()<=0) {
+			errors.rejectValue("error", "validation.invalidStock", new Object[] { "" }, "");
 		}
 		if(StringUtils.isEmptyOrWhitespace(shop.getItemPrice())) {
 			errors.rejectValue("error", "validation.emptyField", new Object[] { ITEM_PRICE }, "");
+		}
+		if(StringUtils.isEmptyOrWhitespace(shop.getItemCategory())) {
+			errors.rejectValue("error", "validation.emptyField", new Object[] { ITEM_CATEGORY }, "");
 		}
 	}
 }

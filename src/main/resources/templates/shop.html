@@ -57,18 +57,18 @@
 			<div class="row pt-2">
 				<div class="col-md-4">
 					<label for="itemStockNumber" th:text="#{label.itemStockNumber}"></label> <input
-						type='text' maxlength="4" th:field="*{itemStockNumber}"
+						type='number' min="1" th:field="*{itemStockNumber}"
 						th:value="*{itemStockNumber}">
 				</div>
 				<div class="col-md-4">
 					<label for="itemPrice" th:text="#{label.itemPrice}"></label> <input
-						type='text' maxlength="4" th:field="*{itemPrice}"
+						type='text' pattern="^(\d*\.)?\d+$" th:field="*{itemPrice}"
 						th:value="*{itemPrice}">
 				</div>
 				<div class="col-md-4">
-					<label for="itemImage" th:text="#{label.itemImage}"></label> <input
-						type='text' maxlength="4" th:field="*{itemImage}"
-						th:value="*{itemImage}">
+					<div class="custom-file">
+						<input type="file" class="custom-file-input" id="inputGroupFile01">
+					</div>
 				</div>
 			</div>
 			<div class="row pt-2">
@@ -108,7 +108,7 @@
 			
 			<div class="row pt-2">
 				<div class="col-md-2">
-					<input type="submit" name="back" id="back" th:value="#{label.backToLogin}">
+					<input type="submit" name="back" id="back" th:value="#{message.backToLogin}">
 				</div>
 			</div>
 

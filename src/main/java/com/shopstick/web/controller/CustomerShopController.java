@@ -1,6 +1,7 @@
 
 package com.shopstick.web.controller;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,8 +61,7 @@ public class CustomerShopController {
 	
 	@GetMapping
 	public String getHome (
-			@ModelAttribute(Constants.CUSTOMER_SHOP_FORM) CustomerShop customerShop,
-			Model model, Errors errors) throws Exception {
+			@ModelAttribute(Constants.CUSTOMER_SHOP_FORM) CustomerShop customerShop) {
 
 		logger.info("CustomerShopController :: getHome");
 		return Constants.CUSTOMER_SHOP_PAGE;
@@ -71,13 +71,16 @@ public class CustomerShopController {
 	public String reload(Model model,
 			@ModelAttribute(Constants.CUSTOMER_SHOP_FORM) CustomerShop customerShop) {
 
+		logger.debug("CustomerShopController :: reload");
 		model.addAttribute(Constants.CUSTOMER_SHOP_FORM, customerShop);
 		return Constants.CUSTOMER_SHOP_PAGE;
 	}
 	
 	/**
 	 * Invoke this method to add item to cart
-	 * 
+	 * @param customerShop
+	 * @param addToCart
+	 * @param redirect
 	 * @return
 	 * @throws Exception
 	 */
@@ -85,7 +88,7 @@ public class CustomerShopController {
 	public String addToCart(
 			@ModelAttribute(Constants.CUSTOMER_SHOP_FORM) CustomerShop customerShop,
 			@RequestParam(value = "addToCart", required = true) String addToCart,
-			Model model, RedirectAttributes redirect) throws Exception {
+			RedirectAttributes redirect) throws Exception {
 
 		logger.info("CustomerShopController :: addToCart");
 		String itemId = addToCart.replace("addToCart@", "");
@@ -100,8 +103,10 @@ public class CustomerShopController {
 	}
 	
 	/**
-	 * Invoke this method to add item to cart
-	 * 
+	 * Invoke this method to delete item from cart
+	 * @param customerShop
+	 * @param deleteFromCart
+	 * @param redirect
 	 * @return
 	 * @throws Exception
 	 */
@@ -109,14 +114,16 @@ public class CustomerShopController {
 	public String deleteFromCart(
 			@ModelAttribute(Constants.CUSTOMER_SHOP_FORM) CustomerShop customerShop,
 			@RequestParam(value = "deleteFromCart", required = true) String deleteFromCart,
-			Model model, RedirectAttributes redirect) throws Exception {
+			RedirectAttributes redirect) throws Exception {
 
 		logger.info("CustomerShopController :: deleteFromCart");
 		String itemId = deleteFromCart.replace("deleteFromCart@", "");
+		
 		Map<String, String> postParams = new HashMap<>();
 		postParams.put("cartId", String.valueOf(customerShop.getCartId()));
 		postParams.put("itemId", String.valueOf(Integer.valueOf(itemId)));
 		restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.DELETE_FROM_CART_RESOURCE_URL, boolean.class, postParams);
+		
 		redirect.addFlashAttribute(Constants.CUSTOMER_SHOP_FORM, customerShop);
 		return REDIRECT + Constants.CUSTOMER_SHOP_PAGE;
 	}
@@ -126,9 +133,14 @@ public class CustomerShopController {
 		logger.info("CustomerShopController :: retrieveCustomerCart");
 		Map<String, Integer> getParams = new HashMap<>();
 		getParams.put("id", customerShop.getUserId());
+		
 		UserItem[] cartItems = restClient.callRestServiceGet(Constants.SHOP_BE_URL, Constants.USER_CART_ITEMS_RESOURCE_URL, UserItem[].class, getParams);
+		
 		if(cartItems.length>0) {
 			customerShop.setCartId(cartItems[0].getCartId());
+			
+//			reset the amount and calculate updated value
+			customerShop.setTotalAmount(BigDecimal.ZERO);
 			for(UserItem userItem : cartItems) {
 				customerShop.setTotalAmount(customerShop.getTotalAmount().add(userItem.getTotalAmount()));
 			}
@@ -138,31 +150,34 @@ public class CustomerShopController {
 	
 	
 	/**
-	 * Invoke this method to checkout
-	 * 
+	 * Invoke this method to proceed to checkout
+	 * @param customerShop
+	 * @param redirect
+	 * @param errors
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping(params = "checkout")
-	public String checkout(@ModelAttribute(Constants.CUSTOMER_SHOP_FORM) CustomerShop customerShop,
-			Model model, RedirectAttributes redirect, Errors errors) {
+	public String checkout(@ModelAttribute(Constants.CUSTOMER_SHOP_FORM) CustomerShop customerShop, 
+			RedirectAttributes redirect, Errors errors) {
 
 		logger.info("CusomerShopController :: checkout");
 
 		Transaction transaction = new Transaction();
 		transaction.setCartId(customerShop.getCartId());
+		transaction.setUserId(customerShop.getUserId());
+		transaction.setUserName(customerShop.getUserName());
 		redirect.addFlashAttribute(Constants.TRANSACTION_FORM, transaction);
 		return REDIRECT + Constants.TRANSACTION_PAGE;
 	}
 	
 	/**
 	 * Invoke this method to go back to login page
-	 * 
+	 * @param redirect
 	 * @return
 	 */
 	@PostMapping(params = "back")
 	public String back(RedirectAttributes redirect) {
-		logger.info("LoginController :: login");
+		logger.info("CustomerShopController :: back");
 		redirect.addFlashAttribute(Constants.LOGIN_FORM, new Login());
 		return REDIRECT + Constants.LOGIN_PAGE;
 	}
