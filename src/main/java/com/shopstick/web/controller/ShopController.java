@@ -63,7 +63,7 @@ public class ShopController {
 	 * @throws Exception
 	 */
 	@PostMapping(params = "clear")
-	public String clear(Model model) throws Exception {
+	public String clear(Model model) {
 
 		logger.info("ShopController :: clear");
 		model.addAttribute(Constants.SHOP_FORM, new Shop());

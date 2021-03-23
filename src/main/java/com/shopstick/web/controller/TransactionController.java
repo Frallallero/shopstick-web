@@ -34,7 +34,7 @@ public class TransactionController {
 	@GetMapping
 	public String getHome (
 			@ModelAttribute(Constants.TRANSACTION_FORM) Transaction transaction,
-			Model model, Errors errors) throws Exception {
+			Model model, Errors errors) {
 
 		logger.info("TransactionController :: getHome");
 		return Constants.TRANSACTION_PAGE;

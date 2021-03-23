@@ -60,21 +60,6 @@
 								<h5 class="card-title" th:text="${it.name}"></h5>
 								<h5 class="card-title" th:text="${it.price + 'S$'}"></h5>
 								<p class="card-text" th:text="${it.description}"></p>
-<!-- 								<div th:if="${it.stockNumber > 4}"> -->
-<!-- 									<select class="form-control"> -->
-<!-- 										<option th:utext="1" th:value="1"></option> -->
-<!-- 										<option th:utext="2" th:value="2"></option> -->
-<!-- 										<option th:utext="3" th:value="3"></option> -->
-<!-- 										<option th:utext="4" th:value="4"></option> -->
-<!-- 										<option th:utext="5" th:value="5"></option> -->
-<!-- 									</select> -->
-<!-- 								</div> -->
-<!-- 								<div th:unless="${it.stockNumber > 4}"> -->
-<!-- 									<select class="form-control" th:field="*{itemToAddQuantity}"> -->
-<!-- 										<option th:each="i: ${#numbers.sequence(0, it.stockNumber)}" -->
-<!-- 											th:utext="${i}" th:value="${i}"> -->
-<!-- 									</select> -->
-<!-- 								</div> -->
 								<button class="btn btn-primary" th:if="${it.stockNumber>0}" type="submit" name="addToCart" th:value="'addToCart@' + ${it.id}" th:text="#{label.addToCart}"></button>
 								<button class="btn btn-primary" th:unless="${it.stockNumber>0}" type="submit" name="addToCart" th:value="'addToCart@' + ${it.id}" th:text="#{label.addToCart}" th:disabled="true"></button>
 							</div>
@@ -105,6 +90,7 @@
 				<h2 th:text="#{message.myCart}"></h2>
 					<div class="col-md-6">
 						<table>
+						<caption>Cart items</caption>
 							<thead>
 								<tr>
 									<td role="columnheader" th:text="#{label.itemName}"></td>

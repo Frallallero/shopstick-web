@@ -51,7 +51,7 @@ public class CustomerShopController {
 	@SuppressWarnings("unchecked")
 	@ModelAttribute("itemsList")
     public List<ItemModel> availableItems(@ModelAttribute(Constants.CUSTOMER_SHOP_FORM) CustomerShop customerShop) throws UnauthorizedException, GenericHttpException {
-        Map<String, String> getParams = new HashMap<>();;
+        Map<String, String> getParams = new HashMap<>();
 		if(!ObjectUtils.isEmpty(customerShop.getCategory()) && !customerShop.getCategory().equalsIgnoreCase("ALL")) {
 			getParams.put("categoryName", customerShop.getCategory());
 			return restClient.callRestServiceGet(Constants.SHOP_BE_URL, Constants.ITEM_CATEGORY_RESOURCE_URL, List.class, getParams);
@@ -88,7 +88,7 @@ public class CustomerShopController {
 	public String addToCart(
 			@ModelAttribute(Constants.CUSTOMER_SHOP_FORM) CustomerShop customerShop,
 			@RequestParam(value = "addToCart", required = true) String addToCart,
-			RedirectAttributes redirect) throws Exception {
+			Model model, RedirectAttributes redirect, Errors errors) throws Exception {
 
 		logger.info("CustomerShopController :: addToCart");
 		String itemId = addToCart.replace("addToCart@", "");
@@ -96,8 +96,13 @@ public class CustomerShopController {
 		postParams.put("userId", customerShop.getUserId());
 		postParams.put("itemId", Integer.valueOf(itemId));
 		postParams.put("quantity", customerShop.getItemToAddQuantity());
-		restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.ADD_TO_CART_RESOURCE_URL, ItemModel.class, postParams);
 		
+		try {
+			restClient.callRestServicePost(Constants.SHOP_BE_URL, Constants.ADD_TO_CART_RESOURCE_URL, ItemModel.class, postParams);
+		} catch(Exception e) {
+			errors.rejectValue("error", "validazione.impossibleToAdd", new Object[] { "item" }, "");
+			return Constants.CUSTOMER_SHOP_PAGE;
+		}
 		redirect.addFlashAttribute(Constants.CUSTOMER_SHOP_FORM, customerShop);
 		return REDIRECT + Constants.CUSTOMER_SHOP_PAGE;
 	}
